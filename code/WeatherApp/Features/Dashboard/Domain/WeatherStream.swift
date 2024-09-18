@@ -49,11 +49,37 @@ public final class WeatherForecastsStreamImpl: WeatherForecastsStream {
                 }
             }, receiveValue: { [weak self] (response: ForecastResponse) in
                 
-                let maxCount = 5
-                let firstFive = response.list.count <= maxCount ? response.list : Array(response.list.prefix(maxCount))
-                self?.forecastSubject.send(.success(firstFive))
+                guard let self else { return }
+                forecastSubject.send(.success(nextFiveDaysForecasts(from: response)))
             })
             .store(in: &cancellables)
+    }
+}
+private extension WeatherForecastsStreamImpl {
+    
+    func nextFiveDaysForecasts(from response: ForecastResponse) -> [WeatherItem] {
+        
+        var groupedResult = [String: WeatherItem]()
+        let calendar = Calendar.current
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy'-'MM'-'dd' 'HH':'mm':'ss"
+        
+        for weather in response.list {
+            
+            // Extract the date component
+            guard let date = dateFormatter.date(from: weather.dt_txt) else { continue }
+            let dateComponents = calendar.dateComponents([.year, .month, .day], from: date)
+            let dateString = "\(dateComponents.year!)-\(dateComponents.month!)-\(dateComponents.day!)"
+            
+            // If a weather item for that date does not exist, add it
+            if groupedResult[dateString] == nil {
+                
+                groupedResult[dateString] = weather
+            }
+            if groupedResult.count == 5 { break }
+        }
+        return groupedResult.sorted(by: { $0.key < $1.key }).map({ $0.value })
     }
 }
 

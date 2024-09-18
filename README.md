@@ -32,3 +32,5 @@ A SwiftUI app that provides weather forecasts using the OpenWeatherMap API.
 
 ## Important
 - This project is created and developed on Xcode 16 and ran on iOS 18 simulator.
+- App configs like API key, urls etc are maintained using xcconfig.
+- And configs are pushed to git repo for convenience only and is a bad practice for security reason.

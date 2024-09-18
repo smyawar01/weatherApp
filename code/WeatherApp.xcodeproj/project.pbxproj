@@ -23,6 +23,7 @@
 		F51661A42C99A19200E489C0 /* AppComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51661A32C99A19200E489C0 /* AppComponent.swift */; };
 		F51661A72C99ADAC00E489C0 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51661A62C99ADAC00E489C0 /* AppConfig.swift */; };
 		F545C18A2C9A958800F3F4C3 /* MockNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545C1892C9A957A00F3F4C3 /* MockNetworkService.swift */; };
+		F545C18C2C9AC83000F3F4C3 /* CurrentWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545C18B2C9AC82A00F3F4C3 /* CurrentWeather.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 		F51661A82C99AEE700E489C0 /* Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Development.xcconfig; sourceTree = "<group>"; };
 		F51661A92C99DA6500E489C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		F545C1892C9A957A00F3F4C3 /* MockNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNetworkService.swift; sourceTree = "<group>"; };
+		F545C18B2C9AC82A00F3F4C3 /* CurrentWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeather.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +184,7 @@
 		F51661942C997C6600E489C0 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				F545C18B2C9AC82A00F3F4C3 /* CurrentWeather.swift */,
 				F516619A2C99832600E489C0 /* WeatherStream.swift */,
 			);
 			path = Domain;
@@ -377,6 +380,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F51661932C997C5F00E489C0 /* DashboardViewModel.swift in Sources */,
+				F545C18C2C9AC83000F3F4C3 /* CurrentWeather.swift in Sources */,
 				F51661A72C99ADAC00E489C0 /* AppConfig.swift in Sources */,
 				F51661642C997BDA00E489C0 /* WeatherApp.swift in Sources */,
 				F51661992C9982AC00E489C0 /* NetworkService.swift in Sources */,

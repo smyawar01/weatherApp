@@ -16,6 +16,12 @@ public protocol WeatherForecastsStream {
     func fetchWeatherForecasts(for city: String)
 }
 
+public protocol CurrentWeatherStream {
+    
+    var weather: AnyPublisher<Result<CurrentWeather, Error>, Never> { get }
+    func fetchCurrentWeather(for city: String)
+}
+
 public final class WeatherForecastsStreamImpl: WeatherForecastsStream {
     
     //MARK: Private
@@ -36,16 +42,49 @@ public final class WeatherForecastsStreamImpl: WeatherForecastsStream {
         let url = URL(string: "\(AppConfig.baseUrl)/forecast?q=\(city)&APPID=\(AppConfig.weatherApiKey)")!
         
         networkService.perform(request: URLRequest(url: url))
-            .sink(receiveCompletion: { completion in
+            .sink(receiveCompletion: { [weak self] completion in
                 if case .failure(let error) = completion {
                     
-                    self.forecastSubject.send(.failure(error))
+                    self?.forecastSubject.send(.failure(error))
                 }
-            }, receiveValue: { (response: WeatherResponse) in
+            }, receiveValue: { [weak self] (response: WeatherResponse) in
                 
                 let maxCount = 5
                 let firstFive = response.list.count <= maxCount ? response.list : Array(response.list.prefix(maxCount))
-                self.forecastSubject.send(.success(firstFive))
+                self?.forecastSubject.send(.success(firstFive))
+            })
+            .store(in: &cancellables)
+    }
+}
+
+public class CurrentWeatherStreamImpl: CurrentWeatherStream {
+    
+    //MARK: Private
+    private let networkService: NetworkService
+    private let currentWeatherSubject = PassthroughSubject<Result<CurrentWeather, Error>, Never>()
+    private var cancellables = Set<AnyCancellable>()
+    
+    //MARK: Public
+    public var weather: AnyPublisher<Result<CurrentWeather, Error>, Never> {
+        
+        currentWeatherSubject.eraseToAnyPublisher()
+    }
+    public init(networkService: NetworkService) {
+        self.networkService = networkService
+    }
+    public func fetchCurrentWeather(for city: String) {
+        
+        let url = URL(string: "\(AppConfig.baseUrl)/weather?q=\(city)&APPID=\(AppConfig.weatherApiKey)")!
+        
+        networkService.perform(request: URLRequest(url: url))
+            .sink(receiveCompletion: { [weak self] completion in
+                if case .failure(let error) = completion {
+                    
+                    self?.currentWeatherSubject.send(.failure(error))
+                }
+            }, receiveValue: { [weak self] (response: CurrentWeather) in
+                
+                self?.currentWeatherSubject.send(.success(response))
             })
             .store(in: &cancellables)
     }

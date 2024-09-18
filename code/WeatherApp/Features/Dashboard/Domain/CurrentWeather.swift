@@ -8,8 +8,8 @@
 
 public struct CurrentWeather: Decodable {
     
-    let temperature: Double
-    let humidity: Int
+    let temperature: String
+    let humidity: String
     let windSpeed: String
     let description: String
 }

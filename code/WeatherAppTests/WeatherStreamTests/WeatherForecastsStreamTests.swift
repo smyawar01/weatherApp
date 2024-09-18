@@ -35,7 +35,7 @@ class WeatherForecastsStreamTests: XCTestCase {
             WeatherItem(main: Main(temp: 15.0, temp_min: 10, temp_max: 20, humidity: 1), weather: [], dt_txt: "2023-09-01 12:00:00"),
             WeatherItem(main: Main(temp: 15.0, temp_min: 10, temp_max: 20, humidity: 1), weather: [], dt_txt: "2023-09-01 15:00:00"),
         ]
-        let response = WeatherResponse(list: weatherItems)
+        let response = ForecastResponse(list: weatherItems)
         mockNetworkService.result = Just(response)
             .setFailureType(to: Error.self)
             .eraseToAnyPublisher() as AnyPublisher<Decodable, Error>

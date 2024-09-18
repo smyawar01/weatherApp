@@ -11,43 +11,64 @@ import Combine
 protocol DashboardViewModelProtocol: ObservableObject {
     
     var forecasts: [WeatherItem] { get }
-    var error: String? { get }
+    var weatherError: String? { get }
+    var forecastError: String? { get }
     var city: String { get set }
+    var currentWeather: CurrentWeather? { get }
     
     func fetchWeather()
 }
 class DashboardViewModel: DashboardViewModelProtocol {
     
     //MARK: Private
-    private var weatherStream: WeatherForecastsStream
+    private var currentStream: CurrentWeatherStream
+    private var forecastStream: WeatherForecastsStream
     private var cancellables = Set<AnyCancellable>()
     
     //MARK: Public
     @Published var forecasts: [WeatherItem] = []
-    @Published var error: String?
+    @Published var weatherError: String?
+    @Published var forecastError: String?
     @Published var city: String = ""
+    @Published var currentWeather: CurrentWeather?
     
-    public init(weatherStream: WeatherForecastsStream) {
+    public init(currentStream: CurrentWeatherStream, forecastStream: WeatherForecastsStream) {
         
-        self.weatherStream = weatherStream
+        self.currentStream = currentStream
+        self.forecastStream = forecastStream
         self.bindForecasts()
+        self.bindCurrentWeather()
     }
     func fetchWeather() {
         
-        weatherStream.fetchWeatherForecasts(for: city)
+        currentStream.fetchCurrentWeather(for: city)
+        forecastStream.fetchWeatherForecasts(for: city)
     }
 }
 private extension DashboardViewModel {
     
     func bindForecasts() {
         
-        weatherStream.forecasts.sink { result in
+        forecastStream.forecasts.sink { result in
             
             switch result {
             case .success(let items):
                 self.forecasts = items
             case .failure(let error):
-                self.error = error.localizedDescription
+                self.forecastError = error.localizedDescription
+            }
+        }
+        .store(in: &cancellables)
+    }
+    func bindCurrentWeather() {
+        
+        currentStream.weather.sink { result in
+            
+            switch result {
+            case .success(let weather):
+                self.currentWeather = weather
+            case .failure(let error):
+                self.weatherError = error.localizedDescription
             }
         }
         .store(in: &cancellables)

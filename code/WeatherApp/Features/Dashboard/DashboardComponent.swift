@@ -14,7 +14,15 @@ struct DashboardComponent: DashboardViewBuilder {
     
     var dashboardViewModel: DashboardViewModel {
         
-        DashboardViewModel(weatherStream: WeatherForecastsStreamImpl(networkService: networkService))
+        DashboardViewModel(currentStream: currentWeatherStream, forecastStream: forecastStream)
+    }
+    var currentWeatherStream: CurrentWeatherStreamImpl {
+        
+        CurrentWeatherStreamImpl(networkService: networkService)
+    }
+    var forecastStream: WeatherForecastsStreamImpl {
+        
+        WeatherForecastsStreamImpl(networkService: networkService)
     }
     var dashboardView: AnyView {
         

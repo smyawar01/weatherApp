@@ -16,24 +16,32 @@ struct DashboardView<ViewModel: DashboardViewModelProtocol>: View {
     }
     var body: some View {
         NavigationView {
-            VStack {
+            VStack(alignment: .leading) {
                 TextField("Enter city", text: $viewModel.city, onCommit: {
                     viewModel.fetchWeather()
                 })
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
                 
-                if let error = viewModel.error {
+                if let weather = viewModel.currentWeather {
+                    
+                    CurrentWeatherView(viewData: weather)
+                        .padding()
+                }
+                if let error = viewModel.weatherError {
                     Text("Error: \(error)")
                         .foregroundColor(.red)
                 }
-                
                 List(viewModel.forecasts, id: \.dt_txt) { item in
                     VStack(alignment: .leading) {
                         Text("Date: \(item.dt_txt)")
                         Text("Temperature: \(item.main.temp)°C")
                         Text("Description: \(item.weather.first?.description ?? "")")
                     }
+                }
+                if let error = viewModel.forecastError {
+                    Text("Error: \(error)")
+                        .foregroundColor(.red)
                 }
             }
             .navigationTitle("Weather Forecast")

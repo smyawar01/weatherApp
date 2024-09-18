@@ -18,12 +18,13 @@
 		F51661992C9982AC00E489C0 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51661982C9982AC00E489C0 /* NetworkService.swift */; };
 		F516619B2C99832600E489C0 /* WeatherStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = F516619A2C99832600E489C0 /* WeatherStream.swift */; };
 		F516619D2C9984DF00E489C0 /* WeatherItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F516619C2C9984DF00E489C0 /* WeatherItem.swift */; };
-		F516619F2C99850100E489C0 /* WeatherResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F516619E2C99850100E489C0 /* WeatherResponse.swift */; };
+		F516619F2C99850100E489C0 /* ApiResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F516619E2C99850100E489C0 /* ApiResponseModel.swift */; };
 		F51661A12C99A12800E489C0 /* DashboardComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51661A02C99A12800E489C0 /* DashboardComponent.swift */; };
 		F51661A42C99A19200E489C0 /* AppComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51661A32C99A19200E489C0 /* AppComponent.swift */; };
 		F51661A72C99ADAC00E489C0 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51661A62C99ADAC00E489C0 /* AppConfig.swift */; };
 		F545C18A2C9A958800F3F4C3 /* MockNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545C1892C9A957A00F3F4C3 /* MockNetworkService.swift */; };
 		F545C18C2C9AC83000F3F4C3 /* CurrentWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545C18B2C9AC82A00F3F4C3 /* CurrentWeather.swift */; };
+		F545C18E2C9ACE8000F3F4C3 /* CurrentWeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545C18D2C9ACE8000F3F4C3 /* CurrentWeatherView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,7 +59,7 @@
 		F51661982C9982AC00E489C0 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		F516619A2C99832600E489C0 /* WeatherStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherStream.swift; sourceTree = "<group>"; };
 		F516619C2C9984DF00E489C0 /* WeatherItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherItem.swift; sourceTree = "<group>"; };
-		F516619E2C99850100E489C0 /* WeatherResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherResponse.swift; sourceTree = "<group>"; };
+		F516619E2C99850100E489C0 /* ApiResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiResponseModel.swift; sourceTree = "<group>"; };
 		F51661A02C99A12800E489C0 /* DashboardComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardComponent.swift; sourceTree = "<group>"; };
 		F51661A32C99A19200E489C0 /* AppComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppComponent.swift; sourceTree = "<group>"; };
 		F51661A62C99ADAC00E489C0 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
@@ -66,6 +67,7 @@
 		F51661A92C99DA6500E489C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		F545C1892C9A957A00F3F4C3 /* MockNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNetworkService.swift; sourceTree = "<group>"; };
 		F545C18B2C9AC82A00F3F4C3 /* CurrentWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeather.swift; sourceTree = "<group>"; };
+		F545C18D2C9ACE8000F3F4C3 /* CurrentWeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +179,7 @@
 			children = (
 				F51661902C997C2500E489C0 /* DashboardView.swift */,
 				F51661922C997C5F00E489C0 /* DashboardViewModel.swift */,
+				F545C18D2C9ACE8000F3F4C3 /* CurrentWeatherView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -194,7 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				F516619C2C9984DF00E489C0 /* WeatherItem.swift */,
-				F516619E2C99850100E489C0 /* WeatherResponse.swift */,
+				F516619E2C99850100E489C0 /* ApiResponseModel.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -384,10 +387,11 @@
 				F51661A72C99ADAC00E489C0 /* AppConfig.swift in Sources */,
 				F51661642C997BDA00E489C0 /* WeatherApp.swift in Sources */,
 				F51661992C9982AC00E489C0 /* NetworkService.swift in Sources */,
-				F516619F2C99850100E489C0 /* WeatherResponse.swift in Sources */,
+				F516619F2C99850100E489C0 /* ApiResponseModel.swift in Sources */,
 				F516619B2C99832600E489C0 /* WeatherStream.swift in Sources */,
 				F51661A42C99A19200E489C0 /* AppComponent.swift in Sources */,
 				F51661912C997C2500E489C0 /* DashboardView.swift in Sources */,
+				F545C18E2C9ACE8000F3F4C3 /* CurrentWeatherView.swift in Sources */,
 				F51661A12C99A12800E489C0 /* DashboardComponent.swift in Sources */,
 				F516619D2C9984DF00E489C0 /* WeatherItem.swift in Sources */,
 			);

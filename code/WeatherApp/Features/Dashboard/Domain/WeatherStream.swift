@@ -47,7 +47,7 @@ public final class WeatherForecastsStreamImpl: WeatherForecastsStream {
                     
                     self?.forecastSubject.send(.failure(error))
                 }
-            }, receiveValue: { [weak self] (response: WeatherResponse) in
+            }, receiveValue: { [weak self] (response: ForecastResponse) in
                 
                 let maxCount = 5
                 let firstFive = response.list.count <= maxCount ? response.list : Array(response.list.prefix(maxCount))
@@ -82,9 +82,13 @@ public class CurrentWeatherStreamImpl: CurrentWeatherStream {
                     
                     self?.currentWeatherSubject.send(.failure(error))
                 }
-            }, receiveValue: { [weak self] (response: CurrentWeather) in
+            }, receiveValue: { [weak self] (response: WeatherResponse) in
                 
-                self?.currentWeatherSubject.send(.success(response))
+                let weather = CurrentWeather(temperature: "\(response.main.temp)",
+                                              humidity: "\(response.main.humidity)",
+                                              windSpeed: "\(response.wind.speed)",
+                                             description: "\(response.weather.first?.description ?? "Not Available")")
+                self?.currentWeatherSubject.send(.success(weather))
             })
             .store(in: &cancellables)
     }

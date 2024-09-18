@@ -53,7 +53,8 @@ class WeatherForecastsStreamTests: XCTestCase {
             .store(in: &cancellables)
 
         weatherForecastsStream.fetchWeatherForecasts(for: "London")
-
+        
+        //Test is failed due to unable to typecast in network service which is being investigated.
         wait(for: [expectation], timeout: 1.0)
     }
 

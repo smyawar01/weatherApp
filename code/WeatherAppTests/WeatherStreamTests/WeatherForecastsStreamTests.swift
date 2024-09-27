@@ -29,52 +29,51 @@ class WeatherForecastsStreamTests: XCTestCase {
         super.tearDown()
     }
 
-    func testFetchWeatherForecastsSuccess() {
-        // Given
-        let weatherItems = [
-            WeatherItem(main: Main(temp: 15.0, temp_min: 10, temp_max: 20, humidity: 1), weather: [], dt_txt: "2023-09-01 12:00:00"),
-            WeatherItem(main: Main(temp: 15.0, temp_min: 10, temp_max: 20, humidity: 1), weather: [], dt_txt: "2023-09-01 15:00:00"),
-        ]
-        let response = ForecastResponse(list: weatherItems)
-        mockNetworkService.result = Just(response)
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher() as AnyPublisher<Decodable, Error>
-
-        let expectation = XCTestExpectation(description: "Fetch weather forecasts successfully")
-
-        // When
-        weatherForecastsStream.forecasts
-            .sink(receiveValue: { result in
-                if case .success(let items) = result {
-                    XCTAssertEqual(items.count, 2, "Should return only 2 items.")
-                    expectation.fulfill()
-                }
-            })
-            .store(in: &cancellables)
-
-        weatherForecastsStream.fetchWeatherForecasts(for: "London")
+    func testFetchWeather_onSuccess_showOnly5dayForecastsAndDropRests() {
         
-        //Test is failed due to unable to typecast in network service which is being investigated.
-        wait(for: [expectation], timeout: 1.0)
+        // Given
+        let forecasts = WeatherFixtures.forcasts
+        let response = ForecastResponse(list: forecasts)
+        mockNetworkService.model = response
+
+        expectation("Fetch weather forecasts successfully") { [weak self] expectation in
+            
+            guard let self else { return }
+            // When
+            weatherForecastsStream.forecasts
+                .sink(receiveValue: { result in
+                    if case .success(let items) = result {
+                        XCTAssertEqual(items.count, 5, "Should show only 5 days forecasts.")
+                        expectation.fulfill()
+                    } else {
+                        XCTFail()
+                    }
+                })
+                .store(in: &cancellables)
+            weatherForecastsStream.fetchWeatherForecasts(for: "London")
+        }
     }
 
     func testFetchWeatherForecastsFailure() {
         
         // Given
-        let expectation = XCTestExpectation(description: "Fetch weather forecasts fails")
-
-        // When
-        weatherForecastsStream.forecasts
-            .sink(receiveValue: { result in
-                if case .failure(let error) = result {
-                    XCTAssertEqual((error as NSError).domain, "MockError", "Should return the correct error.")
-                    expectation.fulfill()
-                }
-            })
-            .store(in: &cancellables)
-
-        weatherForecastsStream.fetchWeatherForecasts(for: "London")
-
-        wait(for: [expectation], timeout: 1.0)
+        expectation("Fetch weather forecasts fails") { [weak self] expectation in
+            
+            guard let self else { return }
+            
+            weatherForecastsStream.forecasts
+                .sink(receiveValue: { result in
+                    if case .failure(let error) = result {
+                        // then
+                        XCTAssertEqual((error as NSError).domain, "MockError", "Should return the correct error.")
+                        expectation.fulfill()
+                    } else {
+                        XCTFail()
+                    }
+                })
+                .store(in: &cancellables)
+            //when
+            weatherForecastsStream.fetchWeatherForecasts(for: "London")
+        }
     }
 }

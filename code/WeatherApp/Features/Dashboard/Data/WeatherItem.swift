@@ -8,9 +8,9 @@
 import Foundation
 
 public struct WeatherItem: Codable {
-    let main: Main
-    let weather: [Weather]
-    let dt_txt: String
+    public let main: Main
+    public let weather: [Weather]
+    public let dt_txt: String
 }
 
 public struct Main: Codable {

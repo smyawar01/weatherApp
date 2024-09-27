@@ -11,15 +11,19 @@ import Foundation
 
 
 class MockNetworkService: NetworkService {
+    
     // A variable to hold the result that will be returned by the perform method
-    var result: AnyPublisher<Decodable, Error>?
+    var model: Decodable?
     
     func perform<Model: Decodable>(request: URLRequest) -> AnyPublisher<Model, Error> {
-        // Cast the result to the expected Model type or return a Fail publisher
-        if let result = result as? AnyPublisher<Model, Error> {
-            return result
+        
+        if let model = model as? Model {
+            
+            return Just(model)
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
         }
-        return Fail(error: NSError(domain: "MockError", code: -1, userInfo: nil)).eraseToAnyPublisher()
+        return Fail(error: NSError(domain: "MockError", code: 500)).eraseToAnyPublisher()
     }
 }
 

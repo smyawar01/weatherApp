@@ -29,11 +29,12 @@ class WeatherForecastsStreamTests: XCTestCase {
         super.tearDown()
     }
 
-    func testFetchWeather_onSuccess_showOnly5dayForecastsAndDropRests() {
+    func test_fetchWeatherForecasts_onSuccessShowNext5dayForecastsAndDropRests() {
         
         // Given
         let forecasts = WeatherFixtures.forcasts
         let response = ForecastResponse(list: forecasts)
+        let maxCount = 5
         mockNetworkService.model = response
 
         expectation("Fetch weather forecasts successfully") { [weak self] expectation in
@@ -43,7 +44,8 @@ class WeatherForecastsStreamTests: XCTestCase {
             weatherForecastsStream.forecasts
                 .sink(receiveValue: { result in
                     if case .success(let items) = result {
-                        XCTAssertEqual(items.count, 5, "Should show only 5 days forecasts.")
+                        XCTAssertEqual(items.count, maxCount, "Should show only \(maxCount) days forecasts.")
+                        XCTAssertEqual(self.datesOnly(forecasts: items), [1,2,3,4,5] , "Should show only \(maxCount) days forecasts.")
                         expectation.fulfill()
                     } else {
                         XCTFail()
@@ -53,7 +55,6 @@ class WeatherForecastsStreamTests: XCTestCase {
             weatherForecastsStream.fetchWeatherForecasts(for: "London")
         }
     }
-
     func testFetchWeatherForecastsFailure() {
         
         // Given
@@ -75,5 +76,15 @@ class WeatherForecastsStreamTests: XCTestCase {
             //when
             weatherForecastsStream.fetchWeatherForecasts(for: "London")
         }
+    }
+}
+private extension XCTestCase {
+    
+    func datesOnly(forecasts: [WeatherItem]) -> [Int] {
+        
+        let calendar = Calendar.current
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-mm-dd HH:mm:ss"
+        return forecasts.map({ calendar.component(.day, from: dateFormatter.date(from: $0.dt_txt) ?? Date()) })
     }
 }

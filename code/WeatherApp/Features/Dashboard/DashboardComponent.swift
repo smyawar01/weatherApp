@@ -30,7 +30,6 @@ struct DashboardComponent: DashboardViewBuilder {
             DashboardView(viewModel: dashboardViewModel)
         )
     }
-    
 }
 protocol DashboardViewBuilder {
     
